@@ -1,6 +1,9 @@
 package sugar
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestContains(t *testing.T) {
 	arr := []string{"a", "b", "c"}
@@ -134,13 +137,25 @@ func TestKeys(t *testing.T) {
 	m["two"] = 2
 	result := Keys(m)
 
-	if result[0] != "one" || result[1] != "two" {
+	if result[0] != "one" || result[1] != "two" || len(m) != len(result) {
 		t.Fail()
 	}
 
 	result = Keys(make(map[string]int))
-	if result != nil {
+	if len(result) != 0 {
 		t.Fail()
+	}
+}
+
+func BenchmarkKeys(b *testing.B) {
+	m := make(map[string]int)
+	for i := 0; i < 100000; i++ {
+		m[fmt.Sprintf("%d", i)] = i
+	}
+
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		Keys(m)
 	}
 }
 
@@ -150,12 +165,24 @@ func TestValues(t *testing.T) {
 	m["two"] = 2
 	result := Values(m)
 
-	if result[0] != 1 || result[1] != 2 {
+	if result[0] != 1 || result[1] != 2 || len(m) != len(result) {
 		t.Fail()
 	}
 
 	result = Values(make(map[string]int))
-	if result != nil {
+	if len(result) != 0 {
 		t.Fail()
+	}
+}
+
+func BenchmarkValues(b *testing.B) {
+	m := make(map[string]int)
+	for i := 0; i < 100000; i++ {
+		m[fmt.Sprintf("%d", i)] = i
+	}
+
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		Keys(m)
 	}
 }

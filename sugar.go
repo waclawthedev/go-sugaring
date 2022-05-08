@@ -95,16 +95,22 @@ func Max[K constraints.Ordered](s []K) (result K) {
 
 //Keys returns array of T containing keys of map[T]K
 func Keys[T constraints.Ordered, K any](m map[T]K) (result []T) {
+	result = make([]T, len(m))
+	i := 0
 	for key, _ := range m {
-		result = append(result, key)
+		result[i] = key
+		i++
 	}
 	return
 }
 
 //Values returns array of T containing values of map[T]K
 func Values[T constraints.Ordered, K any](m map[T]K) (result []K) {
+	result = make([]K, len(m))
+	i := 0
 	for _, value := range m {
-		result = append(result, value)
+		result[i] = value
+		i++
 	}
 	return
 }
