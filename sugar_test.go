@@ -2,6 +2,7 @@ package sugar
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -184,5 +185,74 @@ func BenchmarkValues(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		Keys(m)
+	}
+}
+
+func Test_SplitByN(t *testing.T) {
+	type args struct {
+		s []int
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		{
+			name: "Basic case",
+			args: args{
+				s: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+				n: 3,
+			},
+			want: [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10}},
+		},
+		{
+			name: "n is bigger than slice length",
+			args: args{
+				s: []int{1, 2, 3},
+				n: 5,
+			},
+			want: [][]int{{1, 2, 3}},
+		},
+		{
+			name: "n is same as slice length",
+			args: args{
+				s: []int{1, 2, 3, 4, 5},
+				n: 5,
+			},
+			want: [][]int{{1, 2, 3, 4, 5}},
+		},
+		{
+			name: "empty slice",
+			args: args{
+				s: []int{},
+				n: 3,
+			},
+			want: nil,
+		},
+		{
+			name: "n is zero",
+			args: args{
+				s: []int{1, 2, 3, 4, 5},
+				n: 0,
+			},
+			want: nil,
+		},
+		{
+			name: "n is negative",
+			args: args{
+				s: []int{1, 2, 3, 4, 5},
+				n: -1,
+			},
+			want: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SplitByN(tt.args.s, tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("splitByN() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }
