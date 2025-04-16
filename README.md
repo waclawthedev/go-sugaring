@@ -1,3 +1,5 @@
+# Deprecation notice
+This project transformed to [https://github.com/waclawthedev/gopie](https://github.com/waclawthedev/gopie). Please update your projects to that new package. It has even more useful functions :)
 # What go-sugaring is?
 This is the package with functions from Python/other language, that you are searching for in Go (Golang)
 
